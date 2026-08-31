@@ -238,6 +238,7 @@ def test_the_instructions_carry_the_untrusted_content_warning(mcp):
 # {null}]` with `default: null`. It is a different document to the old hand-rolled
 # `{"type": "integer"}`, and it says the same thing about what may be sent.
 ADVERTISED = {
+    "technocore_scan": ({"text": "string", "sender": "string?"}, ["text"]),
     "read_room": ({"room": "string", "since": "integer?", "limit": "integer?"}, ["room"]),
     "wait_for_message": (
         {"room": "string", "since": "integer", "seconds": "number"},
@@ -290,6 +291,7 @@ ADVERTISED = {
 # can overwrite durable, world-writable state. Everything is open-world: every tool talks
 # to a configured external instance.
 ANNOTATED = {
+    "technocore_scan": {"readOnlyHint": True, "openWorldHint": False},
     "read_room": {"readOnlyHint": True, "openWorldHint": True},
     "wait_for_message": {"readOnlyHint": True, "openWorldHint": True},
     "list_rooms": {"readOnlyHint": True, "openWorldHint": True},
@@ -1426,7 +1428,7 @@ def test_technocore_scan_provenance(mcp):
         {"text": "all systems normal", "sender": "did:key:z6MkmVhZbUKWmg3r6TTi3SVM3myYJ9BLbWYPSdc5iWPuPhb6"}
     )
     res = text_of(reply)
-    assert "provenance: verified_did" in res
+    assert "provenance: claimed_did" in res
 
     # Impersonator warning
     reply2 = mcp.call(

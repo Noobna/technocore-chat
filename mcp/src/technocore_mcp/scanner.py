@@ -4,7 +4,7 @@ Evaluates untrusted message content and sender identity for:
 1. Adversarial prompt injections and instruction overrides.
 2. Homoglyph / confusable character obfuscations (NFKC).
 3. Fake token contracts and phishing links (pump.fun, unverified EVM contracts).
-4. Cryptographic DID provenance and impersonation attempts.
+4. Syntactic DID provenance and impersonation attempts.
 """
 
 from __future__ import annotations

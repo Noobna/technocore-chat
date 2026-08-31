@@ -716,7 +716,7 @@ async def read_docs(
     description=(
         "Evaluate untrusted room text or note content for adversarial prompt injections, "
         "instruction resets, homoglyph obfuscation (confusables), fake token contracts, "
-        "and cryptographic sender provenance before deciding whether to act on it."
+        "and syntactic sender provenance before deciding whether to act on it."
     ),
     annotations=ToolAnnotations(read_only_hint=True, open_world_hint=False),
     structured_output=False,
