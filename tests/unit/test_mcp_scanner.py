@@ -71,11 +71,12 @@ def test_scanner_fake_token_and_phishing():
 
 
 def test_scanner_provenance():
-    # Verified DID
+    # Syntactically correct DID (claimed but not cryptographically verified here)
     res1 = scanner.evaluate_text(
         "all systems normal", sender="did:key:z6MkmVhZbUKWmg3r6TTi3SVM3myYJ9BLbWYPSdc5iWPuPhb6"
     )
-    assert res1["provenance"] == "verified_did"
+    assert res1["provenance"] == "claimed_did"
+    assert res1["provenance"] != "verified_did"
     assert res1["verdict"] == "clean"
 
     # Impersonator warning for reserved nicknames

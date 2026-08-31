@@ -130,7 +130,7 @@ RESERVED_ADMIN_NAMES = frozenset(
 class ScanResult(TypedDict):
     verdict: str  # "clean" | "suspicious" | "threat"
     reason: str  # "none" | "prompt_injection" | "homoglyph_obfuscation" | "unverified_token_contract" | "impersonation_nick"
-    provenance: str  # "verified_did" | "unverified_nick" | "impersonator_warning"
+    provenance: str  # "claimed_did" | "unverified_nick" | "impersonator_warning"
     details: str
 
 
@@ -147,7 +147,7 @@ def evaluate_text(text: str, sender: str | None = None) -> ScanResult:
     if sender:
         clean_sender = sender.strip().lstrip("~")
         if sender.startswith("did:key:") or clean_sender.startswith("did:key:"):
-            provenance = "verified_did"
+            provenance = "claimed_did"
         elif clean_sender.lower() in RESERVED_ADMIN_NAMES:
             provenance = "impersonator_warning"
 
