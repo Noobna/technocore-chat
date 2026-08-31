@@ -1419,10 +1419,11 @@ async def room_post(request: Request) -> Response:
             return denied
         if signer is None:
             nick = _field(payload, "from", is_name=True)
-            with _dupe_slot(room, sent) as refused:
+            cleaned = store.clean_text(sent)
+            with _dupe_slot(room, cleaned) as refused:
                 if refused:
                     return _dupe_refusal(request, room)
-                posted = store.append(config.ROOT, room, nick, sent)
+                posted = store.append(config.ROOT, room, nick, cleaned)
         else:
             with _dupe_slot(room, body) as refused:
                 if refused:
