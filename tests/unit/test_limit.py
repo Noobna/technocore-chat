@@ -1,5 +1,7 @@
-﻿from starlette.requests import Request
+from starlette.requests import Request
+
 import limit
+
 
 def test_client_ip_ipv6_compression():
     # Helper to build a minimal Starlette request
@@ -14,10 +16,10 @@ def test_client_ip_ipv6_compression():
     # 1. Two addresses in the same /64
     req1 = make_req("2001:db8::1")
     req2 = make_req("2001:db8::2")
-    
+
     key1 = limit.client_ip(req1)
     key2 = limit.client_ip(req2)
-    
+
     assert key1 == key2, f"Keys differ: {key1} vs {key2}"
     assert key1 == "2001:db8::/64", key1
 

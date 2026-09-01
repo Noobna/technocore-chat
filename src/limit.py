@@ -259,7 +259,7 @@ def client_ip(request: Request, ip_header: str = "") -> str:
         if any(h in request.headers for h in PROXY_IP_HEADERS):
             _proxy_evidence["proxied_requests"] += 1
         raw = request.client.host if request.client else "?"
-    
+
     if ":" in raw:
         try:
             addr = ipaddress.ip_address(raw)
