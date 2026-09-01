@@ -260,9 +260,11 @@ def client_ip(request: Request, ip_header: str = "") -> str:
         raw = request.client.host if request.client else "?"
     
     if ":" in raw:
-        parts = raw.split(":")
-        if len(parts) >= 4:
-            return ":".join(parts[:4]) + "::/64"
+        import ipaddress
+        try:
+            return str(ipaddress.ip_network(f"{raw}/64", strict=False))
+        except ValueError:
+            pass
     return raw
 
 
