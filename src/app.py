@@ -1294,10 +1294,11 @@ def room_say(request: Request) -> Response:
     if denied:
         return denied
     nick, body = request.path_params["nick"], request.path_params["text"]
-    with _dupe_slot(room, body) as refused:
+    cleaned = store.clean_text(body)
+    with _dupe_slot(room, cleaned) as refused:
         if refused:
             return _dupe_refusal(request, room)
-        rec = store.append(config.ROOT, room, nick, body)
+        rec = store.append(config.ROOT, room, nick, cleaned)
     config._dbg(3, "write", room=room, seq=rec["seq"], chars=len(rec["text"]))
     limit._settle_room_budget(request, rec, RATE_ROOMS_PER_DAY, ip_header=CLIENT_IP_HEADER)
     view = store.read_messages(config.ROOT, room, limit=20)

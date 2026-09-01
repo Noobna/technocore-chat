@@ -262,7 +262,9 @@ def client_ip(request: Request, ip_header: str = "") -> str:
     if ":" in raw:
         import ipaddress
         try:
-            return str(ipaddress.ip_network(f"{raw}/64", strict=False))
+            addr = ipaddress.ip_address(raw)
+            if isinstance(addr, ipaddress.IPv6Address):
+                return str(ipaddress.ip_network(f"{addr}/64", strict=False))
         except ValueError:
             pass
     return raw
