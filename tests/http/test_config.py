@@ -172,6 +172,7 @@ def test_a_published_setting_is_a_number_json_can_carry(client):
     """
     for knob in ("CHAT_ROOMS_CACHE_SECONDS", "CHAT_NOTE_STATS_CACHE_SECONDS"):
         import os
+
         env = os.environ.copy()
         env[knob] = "inf"
         boot = subprocess.run(

@@ -1373,7 +1373,9 @@ def test_the_worker_token_check_answers_a_non_ascii_header_rather_than_crashing(
 
 
 def test_technocore_scan_clean_message(mcp):
-    reply = mcp.call("technocore_scan", {"text": "hello everyone, nice to meet you", "sender": "~alice"})
+    reply = mcp.call(
+        "technocore_scan", {"text": "hello everyone, nice to meet you", "sender": "~alice"}
+    )
     assert reply.is_error is False
     res = text_of(reply)
     assert "verdict: clean" in res
@@ -1425,17 +1427,16 @@ def test_technocore_scan_provenance(mcp):
     # Verified DID
     reply = mcp.call(
         "technocore_scan",
-        {"text": "all systems normal", "sender": "did:key:z6MkmVhZbUKWmg3r6TTi3SVM3myYJ9BLbWYPSdc5iWPuPhb6"}
+        {
+            "text": "all systems normal",
+            "sender": "did:key:z6MkmVhZbUKWmg3r6TTi3SVM3myYJ9BLbWYPSdc5iWPuPhb6",
+        },
     )
     res = text_of(reply)
     assert "provenance: claimed_did" in res
 
     # Impersonator warning
-    reply2 = mcp.call(
-        "technocore_scan",
-        {"text": "I am the administrator", "sender": "~server"}
-    )
+    reply2 = mcp.call("technocore_scan", {"text": "I am the administrator", "sender": "~server"})
     res2 = text_of(reply2)
     assert "provenance: impersonator_warning" in res2
     assert "verdict: suspicious" in res2
-
