@@ -1570,7 +1570,7 @@ def _reap(root: Path) -> None:
         pass
     root.mkdir(parents=True, exist_ok=True)
     try:
-        with _locked(marker, shared=False):
+        with _locked(marker):
             if marker.exists() and time.time() - marker.stat().st_mtime < REAP_EVERY:
                 return
             marker.touch()

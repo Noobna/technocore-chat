@@ -17,6 +17,7 @@ limit would refuse everything.
 """
 
 import hashlib
+import ipaddress
 import threading
 import time
 import unicodedata
@@ -260,7 +261,6 @@ def client_ip(request: Request, ip_header: str = "") -> str:
         raw = request.client.host if request.client else "?"
     
     if ":" in raw:
-        import ipaddress
         try:
             addr = ipaddress.ip_address(raw)
             if isinstance(addr, ipaddress.IPv6Address):
