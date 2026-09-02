@@ -1294,8 +1294,7 @@ def room_say(request: Request) -> Response:
     if denied:
         return denied
     nick, body = request.path_params["nick"], request.path_params["text"]
-    cleaned = store.clean_text(body)
-    with _dupe_slot(room, cleaned) as refused:
+    with _dupe_slot(room, cleaned := store.clean_text(body)) as refused:
         if refused:
             return _dupe_refusal(request, room)
         rec = store.append(config.ROOT, room, nick, cleaned)

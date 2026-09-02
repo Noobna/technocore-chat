@@ -38,3 +38,24 @@ def test_client_ip_ipv6_compression():
     req4 = make_req("192.168.1.1")
     key4 = limit.client_ip(req4)
     assert key4 == "192.168.1.1"
+
+
+def test_client_ip_ipv4_mapped():
+    def make_req(host: str) -> Request:
+        scope = {
+            "type": "http",
+            "client": (host, 12345),
+            "headers": [],
+        }
+        return Request(scope)
+
+    # 5. IPv4-mapped addresses must not coalesce
+    req1 = make_req("::ffff:192.0.2.1")
+    req2 = make_req("::ffff:198.51.100.9")
+
+    key1 = limit.client_ip(req1)
+    key2 = limit.client_ip(req2)
+
+    assert key1 == "192.0.2.1", f"Unexpected mapped key: {key1}"
+    assert key2 == "198.51.100.9", f"Unexpected mapped key: {key2}"
+    assert key1 != key2, "Mapped IPv4 addresses incorrectly coalesced"
